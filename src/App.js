@@ -1,6 +1,7 @@
 import Person from './Person/Person';
 import React, { Component } from 'react';
-import './App.css'
+
+import './App.css';
 
 /**
  * class-based components
@@ -30,21 +31,46 @@ class App extends Component {
   // need to have a render method for React to be able to render
   // HTML to the screen / DOM
   render() {
-    // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS
 
+      // use inline style in order to scope style changes to a single element
+      const  style = {
+        backgroundColor: 'white',
+        font: 'inherit',
+        border: '1px solid blue',
+        padding: '8px',
+        cursor: 'pointer'
+      };
+
+      // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS
       return (
         // we used className because class is a reserved word
         // typically the render method returns just one root element
         <div className="App">
           <h1>Hi, I'm a React  1.0</h1>
           <p>This is really working!</p>
-          <button onClick={this._switchNameHandler}>Switch Name</button>
-          <Person name={this.state.persons[0].name} age={this.state.persons[0].age}>{(this.state.persons[0].hobbies) ?
-              this.state.persons[0].hobbies : ""}</Person>
-          <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>{(this.state.persons[1].hobbies) ?
-              this.state.persons[1].hobbies : ""}</Person>
-          <Person name={this.state.persons[2].name} age={this.state.persons[2].age}>{(this.state.persons[2].hobbies) ?
-              this.state.persons[2].hobbies : ""}</Person>
+          <button
+              style={style}
+              onClick={event => this.switchNameHandler('Olabode')}>Switch Name</button>
+          <Person
+              name={this.state.persons[0].name}
+              age={this.state.persons[0].age}
+              click={this.switchNameHandler.bind(this, 'Olabode')}
+              changed={this.nameChangeHandler}>
+            {(this.state.persons[0].hobbies) ? this.state.persons[0].hobbies : ""}
+          </Person>
+          <Person
+              name={this.state.persons[1].name}
+              age={this.state.persons[1].age}
+              click={this.switchNameHandler.bind(this, 'Afi')}
+              changed={this.nameChangeHandler}>
+            {(this.state.persons[1].hobbies) ? this.state.persons[1].hobbies : ""}
+          </Person>
+          <Person
+              name={this.state.persons[2].name}
+              age={this.state.persons[2].age}
+              changed={this.nameChangeHandler}>
+            {(this.state.persons[2].hobbies) ? this.state.persons[2].hobbies : ""}
+          </Person>
         </div>
       );
 
@@ -53,26 +79,12 @@ class App extends Component {
   }
 
   /**
-   * Typically methods that handle events will be suffixed with the word handler
+   * With Arrow functions, the preferred way to the create handlers
+   * Because we can make use of the this keyword
    *
    * @private
    */
-  _bindSwitchNameHandler()
-  {
-    console.log("A switch button was clicked");
-
-    this.state.persons.forEach(person => {
-      console.log("Person", person.name);
-      console.log("Age", person.age);
-    });
-  }
-
-  /**
-   * With Arrow functions
-   *
-   * @private
-   */
-  _switchNameHandler = () =>
+  switchNameHandler = newName =>
   {
     console.log("A switch button was clicked");
 
@@ -89,7 +101,7 @@ class App extends Component {
     this.setState({
       persons: [
         {
-          name: 'Olabode',
+          name: newName,
           age: 32,
           hobbies: 'My Hobbies: Football, Gym, Reading'
         },
@@ -103,6 +115,47 @@ class App extends Component {
         }
       ]
     })
+  };
+
+  /**
+   * Two way binding
+   *
+   * Render -> onChange -> Handler -> changeState -> Render
+   * @param event
+   */
+  nameChangeHandler = event => {
+    this.setState({
+      persons: [
+        {
+          name: 'Isaac',
+          age: 32,
+          hobbies: 'My Hobbies: Football, Gym, Reading'
+        },
+        {
+          name: event.target.value,
+          age: 30
+        },
+        {
+          name: 'Jacob',
+          age: 1.5
+        }
+      ]
+    });
+  };
+
+  /**
+   * Typically methods that handle events will be suffixed with the word handler
+   *  needs this._bindSwitchNameHandler.bind(this);
+   * @private
+   */
+  _bindSwitchNameHandler()
+  {
+    console.log("A switch button was clicked");
+
+    this.state.persons.forEach(person => {
+      console.log("Person", person.name);
+      console.log("Age", person.age);
+    });
   }
 }
 
