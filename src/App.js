@@ -13,18 +13,18 @@ class App extends Component {
     state = {
         persons: [
             {
-                id:"a1",
+                id: "a1",
                 name: 'Isaac',
                 age: 32,
                 hobbies: 'My Hobbies: Football, Gym, Reading'
             },
             {
-                id:"a2",
+                id: "a2",
                 name: 'Theresa',
                 age: 30
             },
             {
-                id:"a3",
+                id: "a3",
                 name: 'Jacob',
                 age: 1
             }
@@ -37,7 +37,8 @@ class App extends Component {
     render() {
         // use inline style in order to scope style changes to a single element
         const style = {
-            backgroundColor: 'white',
+            backgroundColor: 'green',
+            color: 'white',
             font: 'inherit',
             border: '1px solid blue',
             padding: '8px',
@@ -48,19 +49,33 @@ class App extends Component {
         let persons = null;
 
         // recommended method to render conditional elements
-        if(this.state.showPersons) {
-           persons = (
-               <div>
-                   {this.state.persons.map((person, index) => {
-                       return <Person
-                           click={() => this.deletePersonHandler(index)}
-                           name={person.name}
-                           age={person.age}
-                           key={person.id}
-                           changed={(event) => this.nameChangeHandler(event, person.id)}/>
-                   })}
-               </div>
-           );
+        if (this.state.showPersons) {
+            persons = (
+                <div>
+                    {this.state.persons.map((person, index) => {
+                        return <Person
+                            click={() => this.deletePersonHandler(index)}
+                            name={person.name}
+                            age={person.age}
+                            key={person.id}
+                            changed={(event) => this.nameChangeHandler(event, person.id)}/>
+                    })}
+                </div>
+            );
+
+            style.backgroundColor = 'red';
+        }
+
+        //let classes = ['red', 'bold'].join(' '); // will join all the strings to create one string
+
+        let classes = [];
+
+        if (this.state.persons.length <= 2) {
+            classes.push('red');
+        }
+
+        if (this.state.persons.length <= 1) {
+            classes.push('bold');
         }
 
         // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS
@@ -69,13 +84,14 @@ class App extends Component {
             // typically the render method returns just one root element
             <div className="App">
                 <h1>Hi, I'm a React 1.0</h1>
-                <p>This is really working!</p>
+                <p className={classes.join(' ')}>This is really working!</p>
                 <button
                     style={style}
                     onClick={this.togglePersonsHandler}>Toggle Persons
                 </button>
                 {persons}
             </div>
+
         );
 
         // this line is an equivalent to JSX above, the above will transpile to this
@@ -89,12 +105,6 @@ class App extends Component {
      * @private
      */
     switchNameHandler = newName => {
-        console.log("A switch button was clicked");
-
-        this.state.persons.forEach(person => {
-            console.log("Person", person.name);
-            console.log("Age", person.age);
-        });
 
         //DON'T DO THIS:
         //this.state.persons[0].name = 'Olabode';
