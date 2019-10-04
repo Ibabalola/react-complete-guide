@@ -41,6 +41,7 @@ class App extends Component {
             // typically the render method returns just one root element
             <div className={styles.App}>
                 <Cockpit
+                    title={this.props.appTitle}
                     showPersons={this.state.showPersons}
                     persons={this.state.persons} 
                     toggle={this.togglePersonsHandler}/>
