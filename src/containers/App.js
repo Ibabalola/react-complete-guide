@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Person from './Person/Person';
-
 import styles from './App.module.css';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 /**
  * class-based components
@@ -25,36 +25,14 @@ class App extends Component {
 
         // because React is JS we can pull out the Persons JSX to check the state before we render the element
         let persons = null;
-        let btnClass = '';
 
         // recommended method to render conditional elements
         if (this.state.showPersons) {
-            persons = (
-                <div>
-                    {this.state.persons.map((person, index) => {
-                        return <Person
-                            click={() => this.deletePersonHandler(index)}
-                            name={person.name}
-                            age={person.age}
-                            key={person.id}
-                            changed={(event) => this.nameChangeHandler(event, person.id)}/>
-                    })}
-                </div>
-            );
-
-            btnClass = styles.Red;
-        }
-
-        //let classes = ['red', 'bold'].join(' '); // will join all the strings to create one string
-
-        let classes = [];
-
-        if (this.state.persons.length <= 2) {
-            classes.push(styles.red);
-        }
-
-        if (this.state.persons.length <= 1) {
-            classes.push(styles.bold);
+            persons = <Persons 
+                    persons={this.state.persons} 
+                    clicked={this.deletePersonHandler}
+                    changed={this.nameChangeHandler}
+                   />;
         }
 
         // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS
@@ -62,15 +40,12 @@ class App extends Component {
             // we used className because class is a reserved word
             // typically the render method returns just one root element
             <div className={styles.App}>
-                <h1>Hi, I'm a React 1.0</h1>
-                <p className={classes.join(' ')}>This is really working!</p>
-                <button
-                    className={btnClass} 
-                    onClick={this.togglePersonsHandler}>Toggle Persons
-                </button>
+                <Cockpit
+                    showPersons={this.state.showPersons}
+                    persons={this.state.persons} 
+                    toggle={this.togglePersonsHandler}/>
                 {persons}
             </div>
-
         );
 
         // this line is an equivalent to JSX above, the above will transpile to this
