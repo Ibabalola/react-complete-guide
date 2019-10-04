@@ -1,7 +1,7 @@
-import Person from './Person/Person';
 import React, {Component} from 'react';
+import Person from './Person/Person';
 
-import './App.css';
+import styles from './App.module.css';
 
 /**
  * class-based components
@@ -12,22 +12,9 @@ class App extends Component {
     // state is managed from within a Component
     state = {
         persons: [
-            {
-                id: "a1",
-                name: 'Isaac',
-                age: 32,
-                hobbies: 'My Hobbies: Football, Gym, Reading'
-            },
-            {
-                id: "a2",
-                name: 'Theresa',
-                age: 30
-            },
-            {
-                id: "a3",
-                name: 'Jacob',
-                age: 1
-            }
+            { id: "a1", name: 'Isaac', age: 32, hobbies: 'My Hobbies: Football, Gym, Reading'},
+            { id: "a2", name: 'Theresa', age: 30 },
+            { id: "a3", name: 'Jacob', age: 1 }
         ],
         showPersons: false
     };
@@ -35,18 +22,10 @@ class App extends Component {
     // need to have a render method for React to be able to render
     // HTML to the screen / DOM
     render() {
-        // use inline style in order to scope style changes to a single element
-        const style = {
-            backgroundColor: 'green',
-            color: 'white',
-            font: 'inherit',
-            border: '1px solid blue',
-            padding: '8px',
-            cursor: 'pointer'
-        };
 
         // because React is JS we can pull out the Persons JSX to check the state before we render the element
         let persons = null;
+        let btnClass = '';
 
         // recommended method to render conditional elements
         if (this.state.showPersons) {
@@ -63,7 +42,7 @@ class App extends Component {
                 </div>
             );
 
-            style.backgroundColor = 'red';
+            btnClass = styles.Red;
         }
 
         //let classes = ['red', 'bold'].join(' '); // will join all the strings to create one string
@@ -71,22 +50,22 @@ class App extends Component {
         let classes = [];
 
         if (this.state.persons.length <= 2) {
-            classes.push('red');
+            classes.push(styles.red);
         }
 
         if (this.state.persons.length <= 1) {
-            classes.push('bold');
+            classes.push(styles.bold);
         }
 
         // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS
         return (
             // we used className because class is a reserved word
             // typically the render method returns just one root element
-            <div className="App">
+            <div className={styles.App}>
                 <h1>Hi, I'm a React 1.0</h1>
                 <p className={classes.join(' ')}>This is really working!</p>
                 <button
-                    style={style}
+                    className={btnClass} 
                     onClick={this.togglePersonsHandler}>Toggle Persons
                 </button>
                 {persons}
