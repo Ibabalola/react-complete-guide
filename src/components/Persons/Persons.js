@@ -1,26 +1,54 @@
-import React from 'react';
-
+import React, { Component } from 'react';
 import Person from './Person/Person';
 
-/**
- * ES6 Arrow function notation which omits the return statement if the return is a single line 
- * Belew parenthesis have been used over mutiple lines.
- * JSX can be returned by the arrow function.
- * @param {*} props return a list of perons that we want to transfor to a list of JSX elements
- */
-const persons = (props) => {
-    console.log('[Persons.js] rendering...');
-    return props.persons.map((person, index) => {
-        return (
-            <Person
-                click={() => props.clicked(index)}
-                name={person.name}
-                age={person.age}
-                key={person.id}
-                changed={(event) => props.changed(event, person.id)}
-            />
-        );
-    });
-};
+export default class Persons extends Component {
+     static getDerivedStateFromProps(props, state) {
+        console.log('[Person.js] getDerivedStateFromProps');
+        return state;
+    } 
 
-export default persons;
+    /**
+     * Props received for this update, looks to be a legacy hook
+     * @param {*} props 
+     */
+    // componentWillReceiveProps(props) {
+    //     console.log('[Persons.js] componentWillReceiveProps', props);
+    // }
+
+    shouldComponentUpdate(props, nextState) {
+        console.log('[Persons.js] shouldComponentUpdate');
+        return true;
+    }
+
+    /**
+     * Run Just before component did update, shouldn't really be used legacy
+     * @param {*} props 
+     */
+    // componentWillUpdate (props) {
+
+    // }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('[Persons.js] getSnapshotBeforeUpdate');
+        return {message: 'Snapshot!'};
+    }
+
+    componentDidUpdate(prevProps, prevState, Snapshot) {
+        console.log('[Persons.js] componentDidUpdate', Snapshot);
+    }
+
+    render () {
+        console.log('[Persons.js] rendering...');
+        return this.props.persons.map((person, index) => {
+            return (
+                <Person
+                    click={() => this.props.clicked(index)}
+                    name={person.name}
+                    age={person.age}
+                    key={person.id}
+                    changed={(event) => this.props.changed(event, person.id)}
+                />
+            );
+        });
+    }
+}

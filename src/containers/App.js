@@ -30,7 +30,7 @@ class App extends Component {
      * or null to update nothing.
      * 
      * DO: Sync State to Props
-     * DON'T: Cause Side-Effects e.g. HTTP Requests, Updates to Local Storage
+     * DON'T: Cause Side-Effects e.g. HTTP Requests, Updates to Local Storage 
      * @param {*} props 
      * @param {*} state 
      */
