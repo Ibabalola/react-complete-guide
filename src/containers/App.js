@@ -9,7 +9,12 @@ import Cockpit from '../components/Cockpit/Cockpit';
  */
 class App extends Component {
 
-    // state is managed from within a Component
+    constructor(props) {
+        super(props);
+        console.log('[App.js] constructor');
+    }
+
+    // state is managed from within a Component, a more morden way to set initial state
     state = {
         persons: [
             { id: "a1", name: 'Isaac', age: 32, hobbies: 'My Hobbies: Football, Gym, Reading'},
@@ -19,20 +24,53 @@ class App extends Component {
         showPersons: false
     };
 
+    /**
+     * getDerivedStateFromProps is invoked right before calling the render method, both on the initial 
+     * mount and on subsequent updates. It should return an object to update the state, 
+     * or null to update nothing.
+     * 
+     * DO: Sync State to Props
+     * DON'T: Cause Side-Effects e.g. HTTP Requests, Updates to Local Storage
+     * @param {*} props 
+     * @param {*} state 
+     */
+    static getDerivedStateFromProps(props, state)
+    {
+        console.log('[App.js] getDerivedStateFromProps', props);
+        return state;
+    }
+
+    /**
+     * Legacy lifecycle hook, called before componentWouldMount, used for perparing the state
+     */
+    //componentWillMount() {
+    //    console.log('[App.js] componentWillMount');
+    //}
+
+    /**
+     * is invoked immediately after a component is mounted (inserted into the tree). 
+     * Initialization that requires DOM nodes should go here
+     */
+    componentDidMount() {
+        console.log('[App.js] componentDidMount');
+    }
+
     // need to have a render method for React to be able to render
     // HTML to the screen / DOM
     render() {
-
+        console.log('[App.js] render');
         // because React is JS we can pull out the Persons JSX to check the state before we render the element
         let persons = null;
 
         // recommended method to render conditional elements
         if (this.state.showPersons) {
-            persons = <Persons 
+            persons = ( 
+                <Persons 
                     persons={this.state.persons} 
                     clicked={this.deletePersonHandler}
                     changed={this.nameChangeHandler}
-                   />;
+                />
+            );
         }
 
         // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS

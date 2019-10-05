@@ -8,13 +8,19 @@ import Person from './Person/Person';
  * JSX can be returned by the arrow function.
  * @param {*} props return a list of perons that we want to transfor to a list of JSX elements
  */
-const persons = (props) =>  props.persons.map((person, index) => {
-        return <Person
-            click={() => props.clicked(index)}
-            name={person.name}
-            age={person.age}
-            key={person.id}
-            changed={(event) => props.changed(event, person.id)}/>
-});
+const persons = (props) => {
+    console.log('[Persons.js] rendering...');
+    return props.persons.map((person, index) => {
+        return (
+            <Person
+                click={() => props.clicked(index)}
+                name={person.name}
+                age={person.age}
+                key={person.id}
+                changed={(event) => props.changed(event, person.id)}
+            />
+        );
+    });
+};
 
 export default persons;
