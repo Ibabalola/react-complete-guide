@@ -40,7 +40,10 @@ serviceWorker.unregister();
  *  - Will render Child Components and will mount only when all child components have fully rendered
  * 
  * getSnapshotBeforeUpdate(prevProps, prevState)
+ *  - Returns a snapshot object that can be freely configured
  *  - Used for last minute DOM operations, not so much changes but the state of DOM elements
+ *  - e.g. getting the last minute scrolling position of the user.
+ *  - To restore the UI once an update has been made.
  * 
  * componentDidMount()
  * - Important, good place to make HTTP request to get new data
