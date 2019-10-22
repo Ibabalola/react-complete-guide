@@ -1,5 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Cockpit.module.css';
+
+/**
+ * React Hooks: A function provided by React that allows you to hook into react features
+ * from your function components 
+ * 
+ * - React Hooks can be used in functional componets in newer versions of React.
+ * - Lifecycle hooks are used in class components
+ * - UseEffect: (A React Hook) combines the uses case and functionality of all 
+ *   lifecycle hooks in one react hook.
+ * 
+ */
 
 /**
  * A "dumb" presentational component is functional component that does not manage state, even
@@ -7,8 +18,33 @@ import styles from './Cockpit.module.css';
  * component.
  * @param {*} props 
  */
-const cockpit = (props) => {
-    //let classes = ['red', 'bold'].join(' '); // will join all the strings to create one string
+export default React.memo(props => {
+
+    // Use effect runs for every update
+    // We can use it for all the things we did in componentDidMount and componentDidUpdate
+    // Runs for every render cycle, including the first one
+    // Combines componentDidMount and componentDidUpdate
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+        // Http request...
+        setTimeout(() => {
+            console.log('%c Saved data to cloud!', 'background: #222; color: #bada55');
+        }, 1000);
+        return () => {
+            console.log('[Cockpit.js] cleanup work in useEffect');
+        }
+    }, []); // the state / props changes to which this useEffect should fire on
+
+    // pass an empty array to tell react to run the useEffect once, e.g. componentDidMount
+    useEffect(() => {
+        console.log('[Cockpit.js] 2nd useEffect');
+        return () => {
+            console.log('[Cockpit.js] cleanup work in 2nd useEffect');
+        }
+    });
+
+    // will join all the strings to create one string
+    // let classes = ['red', 'bold'].join(' '); 
 
     let classes = [];
     let btnClass = '';
@@ -17,11 +53,11 @@ const cockpit = (props) => {
         btnClass = styles.Red;
     }
 
-    if (props.persons.length <= 2) {
+    if (props.length <= 2) {
         classes.push(styles.red);
     }
 
-    if (props.persons.length <= 1) {
+    if (props.length <= 1) {
         classes.push(styles.bold);
     }
     
@@ -35,6 +71,4 @@ const cockpit = (props) => {
             </button>
         </div>
     );
-}
-
-export default cockpit;
+});

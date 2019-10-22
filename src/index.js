@@ -32,6 +32,7 @@ serviceWorker.unregister();
  *  - DO: Decide whether to continue or not 
  *  - DON'T: Cause Side Effects
  *  - Used to prevent unecessary updates
+ *  - Used for performance improvements
  * 
  * render()
  *  - Returns JSX (Prepate & Structure your JSX Code)
@@ -55,13 +56,15 @@ serviceWorker.unregister();
  *  - Can cause side effects here e.g. make http requests
  *  - Don't call setState() Synchronously here could cause unecessary re-renders
  *  
+ * componentDidCatch(error, info)
+ *  - This lifecycle is invoked after an error has been thrown by a descendant component. 
+ *  - It receives two parameters
+ *  - error - The error that was thrown.
+ *  - info - An object with a componentStack key containing information about which component threw the error.
+ *  - is called during the “commit” phase, so side-effects are permitted. 
+ *  - It should be used for things like logging errors:
  * 
- * componentDidCatch()
  * componentWillUnmount()
- * shouldComponentUpdate()
- * 
- * 
- * 
- * 
- * 
+ *  - Called just before the component is removed from the DOM
+ *  - A good place to perform clean up tasks, like clearing timers and removing event listeners
  */

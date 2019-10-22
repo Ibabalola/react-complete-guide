@@ -21,7 +21,8 @@ class App extends Component {
             { id: "a2", name: 'Theresa', age: 30 },
             { id: "a3", name: 'Jacob', age: 1 }
         ],
-        showPersons: false
+        showPersons: false,
+        showCockpit: true
     };
 
     /**
@@ -55,8 +56,24 @@ class App extends Component {
         console.log('[App.js] componentDidMount');
     }
 
+    /**
+     * shouldComponentUpdate has to return something, if the return 
+     * statement is falsey then the update will not occur and the component
+     * will not render, returns true by default
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('[App.js] shouldComponentUpdate');
+        return true;
+    }
+
+    componentDidUpdate() {
+        console.log('[App.js] componentDidUpdate');
+    }
+
     // need to have a render method for React to be able to render
     // HTML to the screen / DOM
+    // The render method creates the re-rendered Virtual DOM
+    // Access to real DOM is slow so React onluy does so if the Virtue DOM has been updated
     render() {
         console.log('[App.js] render');
         // because React is JS we can pull out the Persons JSX to check the state before we render the element
@@ -74,15 +91,21 @@ class App extends Component {
         }
 
         // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS
+        // React components can only returns just one root JSX element, which can contain other JSX components
         return (
             // we used className because class is a reserved word
             // typically the render method returns just one root element
             <div className={styles.App}>
+                <button onClick={() => {
+                    this.setState({ showCockpit: false });
+                    }}>Remove Cockpit
+                </button>
+                {this.state.showCockpit ? 
                 <Cockpit
                     title={this.props.appTitle}
                     showPersons={this.state.showPersons}
-                    persons={this.state.persons} 
-                    toggle={this.togglePersonsHandler}/>
+                    length={this.state.persons.length} 
+                    toggle={this.togglePersonsHandler}/> : null}
                 {persons}
             </div>
         );

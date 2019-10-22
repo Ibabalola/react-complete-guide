@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styles from './Person.module.css';
 
 export default class Person extends Component {
