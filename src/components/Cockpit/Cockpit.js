@@ -28,7 +28,7 @@ export default React.memo(props => {
         console.log('[Cockpit.js] useEffect');
         // Http request...
         setTimeout(() => {
-            console.log('%c Saved data to cloud!', 'background: #222; color: #bada55');
+            console.log('[Cockpit.js] simulation of a complete API call');
         }, 1000);
         return () => {
             console.log('[Cockpit.js] cleanup work in useEffect');
