@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styles from './App.module.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import Auxiliary from '../hoc/Auxiliary';
 
 // imported with lower case because it just a JS function
-import withClassOther from '../hoc/withClassOther'; 
+import withClassOther from '../hoc/withClassOther';
 
 /**
  * class-based components
@@ -21,12 +21,14 @@ class App extends Component {
     // state is managed from within a Component, a more morden way to set initial state
     state = {
         persons: [
-            { id: "a1", name: 'Isaac', age: 32, hobbies: 'My Hobbies: Football, Gym, Reading'},
+            { id: "a1", name: 'Isaac', age: 32, hobbies: 'My Hobbies: Football, Gym, Reading' },
             { id: "a2", name: 'Theresa', age: 30 },
             { id: "a3", name: 'Jacob', age: 1 }
         ],
         showPersons: false,
-        changeCounter: 0
+        changeCounter: 0,
+        showCockpit: true
+
     };
 
     /**
@@ -35,12 +37,11 @@ class App extends Component {
      * or null to update nothing.
      * 
      * DO: Sync State to Props
-     * DON'T: Cause Side-Effects e.g. HTTP Requests, Updates to Local Storage
+     * DON'T: Cause Side-Effects e.g. HTTP Requests, Updates to Local Storage 
      * @param {*} props 
      * @param {*} state 
      */
-    static getDerivedStateFromProps(props, state)
-    {
+    static getDerivedStateFromProps(props, state) {
         console.log('[App.js] getDerivedStateFromProps', props);
         return state;
     }
@@ -60,8 +61,24 @@ class App extends Component {
         console.log('[App.js] componentDidMount');
     }
 
+    /**
+     * shouldComponentUpdate has to return something, if the return 
+     * statement is falsey then the update will not occur and the component
+     * will not render, returns true by default
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('[App.js] shouldComponentUpdate');
+        return true;
+    }
+
+    componentDidUpdate() {
+        console.log('[App.js] componentDidUpdate');
+    }
+
     // need to have a render method for React to be able to render
     // HTML to the screen / DOM
+    // The render method creates the re-rendered Virtual DOM
+    // Access to real DOM is slow so React onluy does so if the Virtue DOM has been updated
     render() {
         console.log('[App.js] render');
         // because React is JS we can pull out the Persons JSX to check the state before we render the element
@@ -69,9 +86,9 @@ class App extends Component {
 
         // recommended method to render conditional elements
         if (this.state.showPersons) {
-            persons = ( 
-                <Persons 
-                    persons={this.state.persons} 
+            persons = (
+                <Persons
+                    persons={this.state.persons}
                     clicked={this.deletePersonHandler}
                     changed={this.nameChangeHandler}
                 />
@@ -79,17 +96,24 @@ class App extends Component {
         }
 
         // this is JSX - syntactical sugar invented by the react team it will transpile to valid JS
+        // React components can only returns just one root JSX element, which can contain other JSX components
         return (
             // we used className because class is a reserved word
             // typically the render method returns just one root element
-            <Auxiliary>
-                <Cockpit
-                    title={this.props.appTitle}
-                    showPersons={this.state.showPersons}
-                    persons={this.state.persons} 
-                    toggle={this.togglePersonsHandler}/>
+
+            <div className={styles.App}>
+                <button onClick={() => {
+                    this.setState({ showCockpit: false });
+                }}>Remove Cockpit
+                </button>
+                {this.state.showCockpit ?
+                    <Cockpit
+                        title={this.props.appTitle}
+                        showPersons={this.state.showPersons}
+                        length={this.state.persons.length}
+                        toggle={this.togglePersonsHandler} /> : null}
                 {persons}
-            </Auxiliary>
+            </div>
         );
 
         // this line is an equivalent to JSX above, the above will transpile to this
@@ -156,7 +180,7 @@ class App extends Component {
         // Important for state updates that rely on old state
         this.setState((prevState, props) => {
             return {
-                persons: persons, 
+                persons: persons,
                 changeCounter: prevState.changeCounter + 1
             };
         });
@@ -193,7 +217,7 @@ class App extends Component {
 
         // this removes one element from the array
         persons.splice(index, 1);
-        this.setState({persons: persons});
+        this.setState({ persons: persons });
     };
 
     /**
@@ -202,7 +226,7 @@ class App extends Component {
      */
     togglePersonsHandler = () => {
         const doesShow = this.state.showPersons;
-        this.setState({showPersons: !doesShow});
+        this.setState({ showPersons: !doesShow });
     };
 
     /**
