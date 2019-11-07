@@ -10,6 +10,17 @@ import styles from './Person.module.css';
  * @return {*}
  */
 class Person extends Component {
+    constructor(props) {
+        super(props);
+        this.inputElementRef = React.createRef();
+    }
+
+    componentDidMount() {
+        console.log(`[Person.js] ${this.props.name} has focus`);
+        //this.inputElement.focus();
+        this.inputElementRef.current.focus();
+    }
+
     // render() {
     //     console.log('[Person.js] component rendering...');
     //     return ([
@@ -47,7 +58,7 @@ class Person extends Component {
     // When we return a JSX element we're calling React.createElement()
     // Benefits of this approach is that root JSX element is not rendered to the real DOM
     render() {
-        console.log('[Person.js] auxiliary component rendering...');
+        console.log(`[Person.js] ${this.props.name} component rendering...`);
         return (
             <Auxiliary>
                 <p onClick={this.props.click}>
@@ -55,6 +66,8 @@ class Person extends Component {
                 </p>
                 <p>{this.props.children}</p>
                 <input
+                    //ref={(inputEl) => {this.inputElement = inputEl}}
+                    ref = {this.inputElementRef}
                     type="text"
                     onChange={this.props.changed}
                     value={this.props.name}
