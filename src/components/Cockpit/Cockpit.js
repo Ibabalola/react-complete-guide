@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './Cockpit.module.css';
 
 /**
@@ -19,12 +19,18 @@ import styles from './Cockpit.module.css';
  * @param {*} props 
  */
 export default React.memo(props => {
+    // React.createRef() is only available within class based stateful components
+    // So in functional stateless components we use a react hook for the same functionality
+    const toggleBtnRef = useRef(null);
 
     // Use effect runs for every update
     // We can use it for all the things we did in componentDidMount and componentDidUpdate
     // Runs for every render cycle, including the first one
     // Combines componentDidMount and componentDidUpdate
     useEffect(() => {
+        // At this point the render method has been called so we now have a ref to button
+        toggleBtnRef.current.click();
+
         console.log('[Cockpit.js] useEffect');
         // Http request...
         setTimeout(() => {
@@ -66,6 +72,7 @@ export default React.memo(props => {
             <h1>{props.title}</h1>
             <p className={classes.join(' ')}>This is really working!</p>
             <button
+                ref={toggleBtnRef}
                 className={btnClass} 
                 onClick={props.toggle}>Toggle Persons
             </button>
