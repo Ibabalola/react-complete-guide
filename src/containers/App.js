@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import styles from './App.module.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import Auxiliary from '../hoc/Auxiliary';
+
+// imported with lower case because it just a JS function
+import withClassOther from '../hoc/withClassOther'; 
 
 /**
  * class-based components
@@ -21,7 +25,8 @@ class App extends Component {
             { id: "a2", name: 'Theresa', age: 30 },
             { id: "a3", name: 'Jacob', age: 1 }
         ],
-        showPersons: false
+        showPersons: false,
+        changeCounter: 0
     };
 
     /**
@@ -77,14 +82,14 @@ class App extends Component {
         return (
             // we used className because class is a reserved word
             // typically the render method returns just one root element
-            <div className={styles.App}>
+            <Auxiliary>
                 <Cockpit
                     title={this.props.appTitle}
                     showPersons={this.state.showPersons}
                     persons={this.state.persons} 
                     toggle={this.togglePersonsHandler}/>
                 {persons}
-            </div>
+            </Auxiliary>
         );
 
         // this line is an equivalent to JSX above, the above will transpile to this
@@ -148,7 +153,13 @@ class App extends Component {
         const persons = [...this.state.persons];
         persons[index] = person;
 
-        this.setState({persons: persons});
+        // Important for state updates that rely on old state
+        this.setState((prevState, props) => {
+            return {
+                persons: persons, 
+                changeCounter: prevState.changeCounter + 1
+            };
+        });
     };
 
     /**
@@ -210,4 +221,5 @@ class App extends Component {
 }
 
 // ES6 feature
-export default App;
+// Below is a use of a Higher Order Component that adds some JS code / some logic to the component
+export default withClassOther(App, styles.App);
