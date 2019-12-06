@@ -21,7 +21,7 @@ serviceWorker.unregister();
  *  - Setting an initial state
  *  - DON'T send HTTP request, save to localhost, call setTimeouts
  * 
- * getDerivedStateFromProps(props, state)
+ * static getDerivedStateFromProps(props, state) NEW
  *  - Added with React 16.3 
  *  - Invoked right before calling the render method
  *  - When props change for class based component you can sync your state to them
@@ -40,11 +40,13 @@ serviceWorker.unregister();
  *  - DON'T send HTTP request, save to localhost, call setTimeouts or block the rendering process
  *  - Will render Child Components and will mount only when all child components have fully rendered
  * 
- * getSnapshotBeforeUpdate(prevProps, prevState)
+ * getSnapshotBeforeUpdate(prevProps, prevState) NEW
+ *  - Added with React 16.3 
  *  - Returns a snapshot object that can be freely configured
  *  - Used for last minute DOM operations, not so much changes but the state of DOM elements
  *  - e.g. getting the last minute scrolling position of the user.
  *  - To restore the UI once an update has been made.
+ *  - Allows you to get a snapshot of the DOM right before it is about to change
  * 
  * componentDidMount()
  * - Important, good place to make HTTP request to get new data
@@ -67,4 +69,11 @@ serviceWorker.unregister();
  * componentWillUnmount()
  *  - Called just before the component is removed from the DOM
  *  - A good place to perform clean up tasks, like clearing timers and removing event listeners
+ * 
+ * LEGACY - lifecycle methods
+ * componentWillMount()
+ * componentWillUpdate()
+ * componentWillReceiveProps()
+ * 
+ * because of missuse
  */
