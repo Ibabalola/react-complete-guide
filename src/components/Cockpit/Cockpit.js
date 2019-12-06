@@ -20,6 +20,9 @@ import styles from './Cockpit.module.css';
  * component.
  * @param {*} props 
  */
+
+ // React.memo - a performant method that complets a shallow check on props the change of 
+ // props before the component calls the render life cycle method, prevents unnecessary rerenders
 export default React.memo(props => {
     // React.createRef() is only available within class based stateful components
     // So in functional stateless components we use a react hook for the same functionality
