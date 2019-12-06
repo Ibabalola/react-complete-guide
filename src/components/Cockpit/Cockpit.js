@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
+import AuthContext from '../../context/auth-context';
+
 import styles from './Cockpit.module.css';
 
 /**
@@ -22,16 +24,19 @@ export default React.memo(props => {
     // React.createRef() is only available within class based stateful components
     // So in functional stateless components we use a react hook for the same functionality
     const toggleBtnRef = useRef(null);
+    const authContext = useContext(AuthContext);
+
+    console.log(`[Cockpit.js] authenticated ${authContext.authenticated}`);
 
     // Use effect runs for every update
     // We can use it for all the things we did in componentDidMount and componentDidUpdate
     // Runs for every render cycle, including the first one
     // Combines componentDidMount and componentDidUpdate
     useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
         // At this point the render method has been called so we now have a ref to button
         toggleBtnRef.current.click();
 
-        console.log('[Cockpit.js] useEffect');
         // Http request...
         setTimeout(() => {
             console.log('[Cockpit.js] simulation of a complete API call');
@@ -76,6 +81,7 @@ export default React.memo(props => {
                 className={btnClass} 
                 onClick={props.toggle}>Toggle Persons
             </button>
+            <button onClick={authContext.login}>Log In</button>
         </div>
     );
 });

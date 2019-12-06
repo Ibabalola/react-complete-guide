@@ -3,6 +3,7 @@ import styles from './App.module.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import Auxiliary from '../hoc/Auxiliary';
+import AuthContext from '../context/auth-context';
 
 // imported with lower case because it just a JS function
 import withClassOther from '../hoc/withClassOther';
@@ -26,9 +27,9 @@ class App extends Component {
             { id: "a3", name: 'Jacob', age: 1 }
         ],
         showPersons: false,
+        showCockpit: true,
         changeCounter: 0,
-        showCockpit: true
-
+        authenticated: false
     };
 
     /**
@@ -106,21 +107,33 @@ class App extends Component {
                     this.setState({ showCockpit: false });
                 }}>Remove Cockpit
                 </button>
-                {this.state.showCockpit ?
-                <Auxiliary>
-                    <Cockpit
-                        title={this.props.appTitle}
-                        showPersons={this.state.showPersons}
-                        length={this.state.persons.length}
-                        toggle={this.togglePersonsHandler} /> 
-                </Auxiliary>
-                    : null}
-                {persons}
+                <AuthContext.Provider value={{
+                    authenticated: this.state.authenticated,
+                    login: this.loginHandler
+                }}>
+                    {this.state.showCockpit ?
+                    <Auxiliary>
+                        <Cockpit
+                            title={this.props.appTitle}
+                            showPersons={this.state.showPersons}
+                            length={this.state.persons.length}
+                            toggle={this.togglePersonsHandler} 
+                            /> 
+                    </Auxiliary>
+                        : null}
+                    {persons}
+                </AuthContext.Provider>
             </div>
         );
 
         // this line is an equivalent to JSX above, the above will transpile to this
         // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'))
+    }
+
+    loginHandler = () => {
+        this.setState({
+            authenticated: true
+        })
     }
 
     /**
