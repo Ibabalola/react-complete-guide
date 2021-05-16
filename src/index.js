@@ -35,7 +35,7 @@ serviceWorker.unregister();
  *  - Used for performance improvements
  * 
  * render()
- *  - Returns JSX (Prepate & Structure your JSX Code)
+ *  - Returns JSX (Prepare & Structure your JSX Code)
  *  - Contructs Virtual DOM and check to see if the real DOM needs to be updated
  *  - DON'T send HTTP request, save to localhost, call setTimeouts or block the rendering process
  *  - Will render Child Components and will mount only when all child components have fully rendered
@@ -56,7 +56,7 @@ serviceWorker.unregister();
  * componentDidUpdate()
  *  - Signal that the update is now done and the render method has been executed
  *  - Can cause side effects here e.g. make http requests
- *  - Don't call setState() Synchronously here could cause unecessary re-renders
+ *  - Don't call setState() Synchronously here could cause unnecessary re-renders
  *  
  * componentDidCatch(error, info)
  *  - This lifecycle is invoked after an error has been thrown by a descendant component. 
